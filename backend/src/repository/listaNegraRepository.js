@@ -27,7 +27,7 @@ export async function consultarListaNegra(idUsuario) {
     `;
 
     let resposta = await con.query(comando, [idUsuario]);
-    let registros = resposta[0][0];
+    let registros = resposta[0];
 
     return registros;
 }

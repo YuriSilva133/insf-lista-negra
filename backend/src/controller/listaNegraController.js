@@ -25,7 +25,7 @@ endpoints.get('/listaNegra', async (req, resp) => {
 
         let registros = await db.consultarListaNegra(idUsuario);
         
-        resp.send(registros);
+        resp.send(registros)
     }
     catch (err) {
         resp.status(400).send({
