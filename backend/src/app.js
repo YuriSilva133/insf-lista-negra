@@ -1,14 +1,23 @@
-import 'dotenv/config'
 import express from 'express'
-import cors from 'cors'
-
-import adicionarRotas from './rotas.js'
-
-
 const servidor = express();
+
+// permite o uso de parametro de corpo
+servidor.use(express.json())
+
+// permite a criação de um arquivo .env
+import 'dotenv/config.js'
+
+// permite que outros aplicativos interajam com a API
+import cors from 'cors';
 servidor.use(cors());
-servidor.use(express.json());
 
-adicionarRotas(servidor);
+// adiciona todas as rotas
+import adicionarRotas from './rotas.js';
+adicionarRotas(servidor)
 
-servidor.listen(process.env.PORTA, () => console.log(`--> API subiu na porta ${process.env.PORTA}`));
+// Porta da API
+const PORTA = process.env.PORTA
+
+servidor.listen(
+    PORTA,
+    () => console.log('----> API subiu com sucesso na porta ' + PORTA));

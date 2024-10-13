@@ -5,7 +5,7 @@ export async function inserirListaNegra(pessoa) {
     const comando = `
         insert into tb_lista_negra (nm_pessoa, ds_motivo, dt_vinganca, nr_nota_odio, bt_perdoado) 
 		values (?, ?, ?, ?, ?)
-    `;
+    `
     
     let resposta = await con.query(comando, [pessoa.nome, pessoa.motivo, pessoa.vinganca, pessoa.notaOdio, pessoa.perdoado, pessoa.idUsuario])
     let info = resposta[0];
@@ -27,7 +27,7 @@ export async function consultarListaNegra(idUsuario) {
     `;
 
     let resposta = await con.query(comando, [idUsuario]);
-    let registros = resposta[0];
+    let registros = resposta[0][0];
 
     return registros;
 }
@@ -52,13 +52,13 @@ export async function consultarListaNegraPorId(id) {
 
 export async function alterarListaNegra(id, pessoa) {
     const comando = `
-         update tb_lista_negra 
-            set nm_pessoa = ?,
-                ds_motivo = ?,
-                dt_vinganca = ?,
-                nr_nota_odio = ?,
-                bt_perdoado = ?
-            where id_lista_negra = ?;
+        update tb_lista_negra 
+        set nm_pessoa = ?,
+            ds_motivo = ?,
+            dt_vinganca = ?,
+            nr_nota_odio = ?,
+            bt_perdoado = ?
+        where id_lista_negra = ?;
     `
 
     let resposta = await con.query(comando, [pessoa.nome, pessoa.motivo, pessoa.vinganca, pessoa.notaOdio, pessoa.perdoado, id])
@@ -66,7 +66,6 @@ export async function alterarListaNegra(id, pessoa) {
 
     return info.affectedRows;
 }
-
 
 export async function removerListaNegra(id) {
     const comando = `

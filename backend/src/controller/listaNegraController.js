@@ -3,25 +3,12 @@ import * as db from '../repository/listaNegraRepository.js';
 import { Router } from "express";
 const endpoints = Router();
 
-
-endpoints.get('/listaNegra', async (req, resp) => {
-    try {
-        const {idUsuario} = req.query;
-
-        let registros = await db.consultarListaNegra(idUsuario);
-        resp.send(registros);
-    }
-    catch (err) {
-        resp.status(400).send({
-            erro: err.message
-        })
-    }
-})
-
+// Consultar pessoa da lista Negra
 endpoints.get('/listaNegra/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let registros = await db.consultarListaNegraPorId(id);
+        
         resp.send(registros[0]);
     }
     catch (err) {
@@ -31,9 +18,27 @@ endpoints.get('/listaNegra/:id', async (req, resp) => {
     }
 })
 
+// Consultar pessoa da lista Negra (query)
+endpoints.get('/listaNegra', async (req, resp) => {
+    try {
+        const {idUsuario} = req.query;
+
+        let registros = await db.consultarListaNegra(idUsuario);
+        
+        resp.send(registros);
+    }
+    catch (err) {
+        resp.status(400).send({
+            erro: err.message
+        })
+    }
+})
+
+// inserir pessoa na lista negra
 endpoints.post('/listaNegra/', async (req, resp) => {
     try {
-        let pessoa = req.body;
+        //nome, motivo, vinganca, notaOdio, perdoado, idUsuario
+        let pessoa = req.body
 
         let id = await db.inserirListaNegra(pessoa);
 
@@ -48,14 +53,20 @@ endpoints.post('/listaNegra/', async (req, resp) => {
     }
 })
 
+//atualizar um usuario da lista negra
 endpoints.put('/listaNegra/:id', async (req, resp) => {
     try {
-        let id = req.params.id;
+        let id = req.params.id
+
+        //nome, motivo, vinganca, notaOdio, perdoado
         let pessoa = req.body;
 
         let linhasAfetadas = await db.alterarListaNegra(id, pessoa);
+        
         if (linhasAfetadas >= 1) {
-            resp.send();
+            resp.send({
+                LinhasAlteradas: linhasAfetadas
+            });
         }
         else {
             resp.status(404).send({ erro: 'Nenhum registro encontrado' })
@@ -68,13 +79,16 @@ endpoints.put('/listaNegra/:id', async (req, resp) => {
     }
 })
 
+//remover um registro
 endpoints.delete('/listaNegra/:id', async (req, resp) => {
     try {
         let id = req.params.id;
 
         let linhasAfetadas = await db.removerListaNegra(id);
         if (linhasAfetadas >= 1) {
-            resp.send();
+            resp.send({
+                LinhasRemovidas: linhasAfetadas
+            });
         }
         else {
             resp.status(404).send({ erro: 'Nenhum registro encontrado' })
@@ -86,7 +100,5 @@ endpoints.delete('/listaNegra/:id', async (req, resp) => {
         })
     }
 })
-
-
 
 export default endpoints;
