@@ -21,18 +21,10 @@ export default function Home() {
         if(resp.data.erro !== undefined){
             alert(resp.data.erro)
         }else{
-            let usuario = {
-                "id": resp.data.id,
-                "nome": resp.data.nome 
-            }
-
-            localStorage.setItem('usuario', JSON.stringify(usuario))
+            localStorage.setItem('usuario', JSON.stringify(resp.data))
             navigate('/consultar')
         }
     }
-
-    
-
 
     return (
         <div className='pagina-home'>
